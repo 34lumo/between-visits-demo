@@ -1,5 +1,18 @@
+# OS
 .DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+
+# Local junk
 node_modules/
 *.log
 .env
 .cache/
+
+# Screen recordings produced from record.html
+*.mp4
+*.mov
+*.webm
