@@ -13,9 +13,9 @@ let gameImageLoaded = false;
     gameImageLoaded = true;
   };
   img.onerror = function() {
-    console.error('Failed to load juego.png');
+    console.error('Failed to load assets/game-screenshot.png');
   };
-  img.src = './juego.png';
+  img.src = './assets/game-screenshot.png';
 })();
 
 function renderBlock2Beat1(ctx, t) {

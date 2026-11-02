@@ -10,12 +10,12 @@ let dashboardImageLoaded = false;
   img.onload = function() {
     dashboardImage = img;
     dashboardImageLoaded = true;
-    console.log('✅ dashboardmedico.png loaded successfully! Width:', img.width, 'Height:', img.height);
+    console.log('✅ assets/clinician-dashboard.png loaded successfully! Width:', img.width, 'Height:', img.height);
   };
   img.onerror = function() {
-    console.error('❌ Failed to load dashboardmedico.png');
+    console.error('❌ Failed to load assets/clinician-dashboard.png');
   };
-  img.src = './dashboardmedico.png?v=' + Date.now();
+  img.src = './assets/clinician-dashboard.png?v=' + Date.now();
 })();
 
 

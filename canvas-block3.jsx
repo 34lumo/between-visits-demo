@@ -12,9 +12,9 @@ let trackingImageLoaded = false;
     trackingImageLoaded = true;
   };
   img.onerror = function() {
-    console.error('Failed to load varometricas.png');
+    console.error('Failed to load assets/metrics-screenshot.png');
   };
-  img.src = './varometricas.png';
+  img.src = './assets/metrics-screenshot.png';
 })();
 
 function renderBlock3Beat1(ctx, t) {

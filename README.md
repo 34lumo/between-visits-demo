@@ -1,56 +1,54 @@
-# Between Visits — 60s Product Demo
+# Between Visits demo
 
-A 60-second motion graphics composition for **Between Visits**, a B2B SaaS platform for post-stroke rehabilitation monitoring.
+A 60-second motion graphics product demo for Between Visits, written as a set of React components that animate a 1920x1080 stage in the browser.
 
-## Product Overview
+![SteadyArc game session, one of the screenshots used in the demo](assets/session-game.png)
 
-Between Visits allows patients to complete a 60-second game at home using their webcam. The platform uses computer vision to capture 14 clinical biomarkers (hand landmarks, facial symmetry, gaze tracking, vocal stability) and automatically sends a clinical report to the neurologist or rehabilitation team. No hardware required.
+## What it is
 
-## Design System
+Between Visits is a pitch for post-stroke rehabilitation monitoring at home: the patient plays a short webcam game (SteadyArc), computer vision pulls clinical markers out of the hand, face, gaze and voice, and a report goes to the neurologist or rehab team. This repo is only the demo video for that pitch, not the product.
 
-**Tone:** Serious, clinical, human. Linear meets medical journal. Clean, minimal, with weight.
+The demo is built as code instead of in a video editor: every block is a React component (or a canvas render function) driven by a shared timeline, so timings and copy can be tweaked and replayed in the browser. It was made in May 2026.
 
-**Visual Style:**
-- Black background (`#000000`)
-- White typography (Playfair Display for headlines, JetBrains Mono for clinical labels)
-- Accent color: `#4A9EFF` (MediaPipe blue) — used only on positive data moments, clinical labels, active biomarker states
-- Atmospheric effects: navy, teal, amber, indigo gradients per block
-- Kinetic typography with slam-in animations, count-up numbers, overshoot effects
+## How it works
 
-**Composition Structure:**
-- 60 seconds total
-- 7 blocks:
-  1. **Block 1 (0:00-0:11):** The Problem — stroke statistics
-  2. **Block 2 (0:11-0:18):** The Product Enters — game screenshots
-  3. **Block 3 (0:18-0:27):** Clinical Observation — hand/face tracking
-  4. **Block 4 (0:27-0:39):** The Report — clinical data visualization
-  5. **Block 5 (0:39-0:46):** Comparison — traditional vs. Between Visits
-  6. **Block 6 (0:46-0:53):** Network Effect — care team collaboration
-  7. **Block 7 (0:53-0:60):** Close — final message
+- `animations.jsx` is a small timeline framework: a `Stage` with play/pause, scrubber and keyboard control (space, left/right arrows, 0 to reset), `Sprite` components that exist between two timestamps, and easing helpers.
+- The composition is 7 blocks over 60 seconds (66 with buffer): the problem, the product, clinical observation, the report, comparison with the traditional follow-up, the care team, and the close.
+- There are two renderings of the same script:
+  - `between-visits-canvas.html` draws everything on a 2D canvas (`canvas-engine.jsx` plus `canvas-block1..7.jsx`): kinetic typography, count-ups, atmospheres, grain and glitch transitions, with three product screenshots dropped in.
+  - `between-visits-scenes.html` is the DOM version (`scenes-block1..7.jsx`), built around cropped product screenshots shown inside framed "monitor" viewports.
+- `record.html` is the canvas version with React in production mode, no loop and no autoplay, meant to be opened full screen and screen recorded.
 
-## Files
+## Stack
 
-- **`Between Visits - Canvas.html`** — Main canvas-based version (pure motion graphics, no images)
-- **`Between Visits.html`** — Scene-based version (with product screenshots)
-- **`animations.jsx`** — Animation framework (Stage, Sprite, easing functions)
-- **`canvas-engine.jsx`** — Canvas rendering helpers (text, atmosphere, effects)
-- **`canvas-block[1-7].jsx`** — Individual block implementations for canvas version
-- **`scenes-block[1-7].jsx`** — Individual block implementations for scene version
-- **`uploads/`** — Product screenshots used in the demo
+Plain HTML, React 18 and Babel standalone from unpkg (JSX is compiled in the browser), Canvas 2D, Google Fonts (Playfair Display, JetBrains Mono, Inter). No build step, no npm.
 
-## Usage
+## Run it
 
-Simply open `Between Visits - Canvas.html` in a modern browser. The composition includes:
-- Playback controls (play/pause with spacebar)
-- Scrubber for precise timeline navigation
-- Loop enabled by default
-- All fonts loaded from Google Fonts
+The JSX files are fetched by Babel at runtime, so the folder has to be served over HTTP (opening the file directly does not work in most browsers).
 
-## Technical Details
+```
+python3 -m http.server 8000 --bind 127.0.0.1
+```
 
-- Built with React 18 + Babel standalone
-- Pure canvas rendering at 1920×1080
-- 66 seconds total duration (includes buffer)
-- Fonts: Playfair Display (900, 700, italic), JetBrains Mono (500), Inter (500-600)
-- All animations use custom easing functions (easeOutBack, easeOutExpo, easeOutCubic, etc.)
-- Atmospheric effects: radial gradients with particle dust, vignette, film grain
+Then open:
+
+- http://127.0.0.1:8000/between-visits-canvas.html for the canvas version
+- http://127.0.0.1:8000/between-visits-scenes.html for the screenshot version
+- http://127.0.0.1:8000/record.html to record (press F11 or your browser's full screen, start a screen recorder, press space)
+
+Playback position is saved in localStorage, so a reload resumes where you left it; press 0 to go back to the start.
+
+## Project layout
+
+```
+animations.jsx              timeline framework (Stage, Sprite, easing)
+canvas-engine.jsx           canvas drawing helpers (text, atmospheres, effects)
+canvas-block1..7.jsx        the 7 blocks, canvas version
+scenes-block1..7.jsx        the 7 blocks, DOM version
+between-visits-canvas.html  canvas composition
+between-visits-scenes.html  DOM composition
+record.html                 canvas composition set up for screen recording
+assets/                     product screenshots loaded by the blocks
+docs/                       extra screenshot not used by the demo
+```
